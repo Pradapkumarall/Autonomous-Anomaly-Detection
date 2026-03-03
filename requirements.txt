@@ -1,0 +1,10 @@
+kafka-python
+scikit-learn
+tensorflow
+langchain
+langgraph
+streamlit
+pandas
+pydantic
+numpy
+joblib
