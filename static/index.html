@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Anomaly Detection & Response Agent</title>
+    <meta name="description" content="Real-time AI-powered anomaly detection dashboard with autonomous response capabilities. Detect, diagnose, and resolve system anomalies in under 60 seconds.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- ═══════════════ HERO SECTION ═══════════════ -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="pulse-dot"></span>
+                <span>AI-Powered Autonomous Agent</span>
+            </div>
+            <h1>Anomaly Detection<br><span class="gradient-text">& Response Agent</span></h1>
+            <p class="hero-desc">
+                Real-time monitoring system that <strong>detects</strong>, <strong>diagnoses</strong>, and <strong>resolves</strong> 
+                system anomalies autonomously — in under <span class="highlight">60 seconds</span>.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-value">&lt;60s</span>
+                    <span class="hero-stat-label">Resolution Time</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">99.7%</span>
+                    <span class="hero-stat-label">Detection Accuracy</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">24/7</span>
+                    <span class="hero-stat-label">Autonomous Monitoring</span>
+                </div>
+            </div>
+            <div class="hero-flow">
+                <div class="flow-step"><span class="flow-icon">📊</span><span>Data Stream</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step"><span class="flow-icon">🤖</span><span>ML Detection</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step"><span class="flow-icon">🧠</span><span>AI Reasoning</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step"><span class="flow-icon">⚙️</span><span>Auto Action</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step"><span class="flow-icon">📋</span><span>Report</span></div>
+            </div>
+            <a href="#dashboard" class="hero-cta">Launch Dashboard ↓</a>
+        </div>
+    </section>
+
+    <!-- ═══════════════ NAVIGATION ═══════════════ -->
+    <nav class="nav-bar" id="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">🛡️</span>
+            <span>AnomalyGuard</span>
+        </div>
+        <div class="nav-links">
+            <a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a>
+            <a href="#upload-section" class="nav-link" data-section="upload-section">Upload Data</a>
+            <a href="#events-section" class="nav-link" data-section="events-section">Events</a>
+            <a href="#agent-section" class="nav-link" data-section="agent-section">Agent Log</a>
+        </div>
+        <div class="nav-status">
+            <span class="sim-status-dot" id="simStatusDot"></span>
+            <span id="simStatusText">Idle</span>
+        </div>
+    </nav>
+
+    <!-- ═══════════════ MAIN DASHBOARD ═══════════════ -->
+    <main class="container" id="dashboard">
+        <!-- KPI Cards -->
+        <section class="kpi-grid">
+            <div class="kpi-card" id="kpiTotal">
+                <div class="kpi-icon">📡</div>
+                <div class="kpi-body">
+                    <span class="kpi-value" id="totalEvents">0</span>
+                    <span class="kpi-label">Total Events</span>
+                </div>
+            </div>
+            <div class="kpi-card kpi-danger" id="kpiAnomalies">
+                <div class="kpi-icon">🚨</div>
+                <div class="kpi-body">
+                    <span class="kpi-value" id="anomalyCount">0</span>
+                    <span class="kpi-label">Anomalies Detected</span>
+                </div>
+            </div>
+            <div class="kpi-card kpi-success" id="kpiNormal">
+                <div class="kpi-icon">✅</div>
+                <div class="kpi-body">
+                    <span class="kpi-value" id="normalCount">0</span>
+                    <span class="kpi-label">Normal Events</span>
+                </div>
+            </div>
+            <div class="kpi-card kpi-warning" id="kpiMTTR">
+                <div class="kpi-icon">⚡</div>
+                <div class="kpi-body">
+                    <span class="kpi-value" id="avgMTTR">0ms</span>
+                    <span class="kpi-label">Avg Resolution (MTTR)</span>
+                </div>
+            </div>
+            <div class="kpi-card" id="kpiRate">
+                <div class="kpi-icon">📊</div>
+                <div class="kpi-body">
+                    <span class="kpi-value" id="anomalyRate">0%</span>
+                    <span class="kpi-label">Anomaly Rate</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Gauges -->
+        <section class="gauges-section">
+            <h2 class="section-title"><span class="section-icon">📈</span> Live System Metrics</h2>
+            <div class="gauges-grid">
+                <div class="gauge-card">
+                    <canvas id="cpuGauge" width="180" height="180"></canvas>
+                    <div class="gauge-label">CPU Usage</div>
+                    <div class="gauge-value" id="cpuValue">0%</div>
+                </div>
+                <div class="gauge-card">
+                    <canvas id="memGauge" width="180" height="180"></canvas>
+                    <div class="gauge-label">Memory Usage</div>
+                    <div class="gauge-value" id="memValue">0%</div>
+                </div>
+                <div class="gauge-card">
+                    <canvas id="latGauge" width="180" height="180"></canvas>
+                    <div class="gauge-label">Latency</div>
+                    <div class="gauge-value" id="latValue">0ms</div>
+                </div>
+                <div class="gauge-card">
+                    <canvas id="errGauge" width="180" height="180"></canvas>
+                    <div class="gauge-label">Error Rate</div>
+                    <div class="gauge-value" id="errValue">0%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Controls -->
+        <section class="sim-controls">
+            <button class="btn btn-primary" id="btnStartSim" onclick="startSimulation()">
+                <span class="btn-icon">▶</span> Start Real-Time Simulation
+            </button>
+            <button class="btn btn-danger" id="btnStopSim" onclick="stopSimulation()" style="display:none;">
+                <span class="btn-icon">⏹</span> Stop Simulation
+            </button>
+            <button class="btn btn-secondary" onclick="loadExistingEvents()">
+                <span class="btn-icon">📂</span> Load Existing Events
+            </button>
+            <button class="btn btn-ghost" onclick="clearEvents()">
+                <span class="btn-icon">🗑️</span> Clear All
+            </button>
+        </section>
+
+        <!-- Time Series Chart -->
+        <section class="chart-section">
+            <h2 class="section-title"><span class="section-icon">📉</span> Anomaly Detection Timeline</h2>
+            <div class="chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Root Cause & Actions Charts -->
+        <section class="charts-row">
+            <div class="chart-card">
+                <h3 class="chart-title">Root Cause Distribution</h3>
+                <canvas id="rootCauseChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">Actions Taken</h3>
+                <canvas id="actionsChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <!-- ═══════════════ UPLOAD SECTION ═══════════════ -->
+    <section class="container section" id="upload-section">
+        <h2 class="section-title"><span class="section-icon">📤</span> Upload Dataset for Analysis</h2>
+        <p class="section-desc">Upload a CSV or JSON file with system metrics (cpu_usage, memory_usage, latency, error_rate) for batch anomaly detection.</p>
+        
+        <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                </svg>
+            </div>
+            <p class="upload-text">Drag & drop your dataset here</p>
+            <p class="upload-sub">or click to browse — supports CSV, JSON</p>
+            <input type="file" id="fileInput" accept=".csv,.json" hidden>
+        </div>
+
+        <div class="upload-progress" id="uploadProgress" style="display:none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="progress-text" id="progressText">Analyzing...</span>
+        </div>
+
+        <div class="upload-results" id="uploadResults" style="display:none;">
+            <div class="result-header">
+                <h3 id="resultTitle">Analysis Complete</h3>
+                <div class="result-stats">
+                    <span class="result-badge badge-total" id="resultTotal">0 rows</span>
+                    <span class="result-badge badge-anomaly" id="resultAnomalies">0 anomalies</span>
+                </div>
+            </div>
+            <div class="result-cards" id="resultCards"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ EVENTS STREAM ═══════════════ -->
+    <section class="container section" id="events-section">
+        <h2 class="section-title"><span class="section-icon">📋</span> Event Stream</h2>
+        <div class="events-filter">
+            <button class="filter-btn active" onclick="filterEvents('all', this)">All</button>
+            <button class="filter-btn" onclick="filterEvents('anomaly', this)">🔴 Anomalies</button>
+            <button class="filter-btn" onclick="filterEvents('normal', this)">🟢 Normal</button>
+        </div>
+        <div class="events-list" id="eventsList">
+            <div class="empty-state">
+                <span class="empty-icon">📡</span>
+                <p>No events yet. Upload a dataset or start a simulation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ AGENT ACTIVITY LOG ═══════════════ -->
+    <section class="container section" id="agent-section">
+        <h2 class="section-title"><span class="section-icon">🤖</span> Agentic AI Activity Log</h2>
+        <p class="section-desc">Real-time log of the AI agent's autonomous decisions and actions.</p>
+        <div class="agent-timeline" id="agentTimeline">
+            <div class="empty-state">
+                <span class="empty-icon">🧠</span>
+                <p>Agent is idle. Start a simulation to see autonomous decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>🛡️ Autonomous Anomaly Detection & Response Agent v2.0</span>
+            <span class="footer-sep">|</span>
+            <span>ML Engine: Isolation Forest + LSTM Autoencoder</span>
+            <span class="footer-sep">|</span>
+            <span>Agent Brain: LangGraph State Machine</span>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

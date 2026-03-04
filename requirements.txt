@@ -8,3 +8,6 @@ pandas
 pydantic
 numpy
 joblib
+fastapi
+uvicorn
+python-multipart
